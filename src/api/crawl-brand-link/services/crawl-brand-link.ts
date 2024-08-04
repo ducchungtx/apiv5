@@ -6,7 +6,7 @@ import * as cheerio from 'cheerio';
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService('api::crawl-brand-link.crawl-brand-link', ({ strapi }) => ({
-  async crawlBrandLinks(url) {
+  async getBrandLinks(url) {
     try {
       const { data } = await axios.get(url, {
         headers: {
