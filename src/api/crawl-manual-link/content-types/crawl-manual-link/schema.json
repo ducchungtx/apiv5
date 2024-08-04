@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "crawl_manual_links",
+  "info": {
+    "singularName": "crawl-manual-link",
+    "pluralName": "crawl-manual-links",
+    "displayName": "CrawlManualLink"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    },
+    "isCrawl": {
+      "type": "boolean",
+      "default": false
+    },
+    "crawl_brand_link": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::crawl-brand-link.crawl-brand-link",
+      "inversedBy": "crawl_manual_links"
+    }
+  }
+}

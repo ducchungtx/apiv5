@@ -1,12 +1,13 @@
 /**
- * post-document service
+ * crawl-manual-link service
  */
+
+import { factories } from '@strapi/strapi';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { factories } from '@strapi/strapi';
 
-export default factories.createCoreService('api::post-document.post-document', ({ strapi }) => ({
-  async crawlManualLinks(url) {
+export default factories.createCoreService('api::crawl-manual-link.crawl-manual-link', ({ strapi }) => ({
+  async getManualLinks(url) {
     try {
       const { data } = await axios.get(url, {
         headers: {
@@ -29,7 +30,7 @@ export default factories.createCoreService('api::post-document.post-document', (
       throw new Error('Failed to fetch the URL');
     }
   },
-  async crawlManualDetail(url) {
+  async getManualDetail(url) {
     try {
       const { data } = await axios.get(url, {
         headers: {
@@ -56,5 +57,4 @@ export default factories.createCoreService('api::post-document.post-document', (
       throw new Error('Failed to fetch the URL');
     }
   }
-
 }));

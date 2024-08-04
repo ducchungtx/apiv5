@@ -507,6 +507,67 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCrawlBrandLinkCrawlBrandLink
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'crawl_brand_links';
+  info: {
+    singularName: 'crawl-brand-link';
+    pluralName: 'crawl-brand-links';
+    displayName: 'CrawlBrandLink';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    link: Schema.Attribute.String & Schema.Attribute.Required;
+    isCrawl: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    crawl_manual_links: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::crawl-manual-link.crawl-manual-link'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+  };
+}
+
+export interface ApiCrawlManualLinkCrawlManualLink
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'crawl_manual_links';
+  info: {
+    singularName: 'crawl-manual-link';
+    pluralName: 'crawl-manual-links';
+    displayName: 'CrawlManualLink';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    link: Schema.Attribute.String & Schema.Attribute.Required;
+    isCrawl: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    crawl_brand_link: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::crawl-brand-link.crawl-brand-link'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+  };
+}
+
 export interface ApiPostDocumentPostDocument
   extends Struct.CollectionTypeSchema {
   collectionName: 'post_documents';
@@ -896,6 +957,8 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::brand.brand': ApiBrandBrand;
       'api::category.category': ApiCategoryCategory;
+      'api::crawl-brand-link.crawl-brand-link': ApiCrawlBrandLinkCrawlBrandLink;
+      'api::crawl-manual-link.crawl-manual-link': ApiCrawlManualLinkCrawlManualLink;
       'api::post-document.post-document': ApiPostDocumentPostDocument;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;

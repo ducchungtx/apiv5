@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "crawl_brand_links",
+  "info": {
+    "singularName": "crawl-brand-link",
+    "pluralName": "crawl-brand-links",
+    "displayName": "CrawlBrandLink",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    },
+    "isCrawl": {
+      "type": "boolean",
+      "default": false
+    },
+    "crawl_manual_links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::crawl-manual-link.crawl-manual-link",
+      "mappedBy": "crawl_brand_link"
+    }
+  }
+}
