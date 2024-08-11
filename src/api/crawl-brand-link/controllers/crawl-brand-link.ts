@@ -23,14 +23,14 @@ export default factories.createCoreController('api::crawl-brand-link.crawl-brand
         return;
       }
       // create new link
-      var saveItem = await strapi.db.query('api::crawl-brand-link.crawl-brand-link').create({
+      var saveItem = await strapi.documents('api::crawl-brand-link.crawl-brand-link').create({
         data: {
           link: link.link,
           name: link.text,
-          isCrawled: false,
-          created_by_id: 1,
-          updated_by_id: 1,
-          published_at: new Date(),
+          isCrawl: false,
+          publishedAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         }
       });
       if (saveItem) {
