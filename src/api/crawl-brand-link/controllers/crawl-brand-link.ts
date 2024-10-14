@@ -22,23 +22,28 @@ export default factories.createCoreController('api::crawl-brand-link.crawl-brand
       if (item) {
         return;
       }
-      // create new link
       var saveItem = await strapi.documents('api::crawl-brand-link.crawl-brand-link').create({
         data: {
           link: link.link,
           name: link.text,
           isCrawl: false,
-          publishedAt: new Date(),
           createdAt: new Date(),
+          createdBy: 1,
           updatedAt: new Date(),
+          updatedBy: 1,
         }
       });
       if (saveItem) {
-        strapi.log.info(`Link ${link.link} added to database`);
+        // update to published
+        await strapi.documents('api::crawl-brand-link.crawl-brand-link').publish({
+          documentId: saveItem.documentId,
+        });
+        strapi.log.info(`Link ${links[0].link} added to database`);
       } else {
-        strapi.log.error(`Link ${link.link} failed to add to database`);
+        strapi.log.error(`Link ${links[0].link} failed to add to database`);
       }
     });
+
     ctx.send(links);
   },
 }));
