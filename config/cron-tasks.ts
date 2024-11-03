@@ -5,15 +5,16 @@ export default {
    */
 
   // every 1 minute
-  '*/10 * * * *': async ({ strapi }) => {
+  '*/1 * * * *': async ({ strapi }) => {
     strapi.log.info('Start crawl brand link');
     const item = await strapi.db.query('api::crawl-brand-link.crawl-brand-link').findOne({
       where: { isCrawl: false },
     });
     if (item) {
       const { link } = item;
-      const links = await strapi.service('api::crawl-brand-link.crawl-brand-link').getBrandLinks(link);
-      console.log("links", links);
+      const url = `https://www.cleancss.com/user-manuals/${link}`;
+      const links = await strapi.service('api::crawl-manual-link.crawl-manual-link').getManualLinks(url);
+      // save to database
     } else {
       strapi.log.info(`No link to crawl`);
     }

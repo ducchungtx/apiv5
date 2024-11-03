@@ -6,7 +6,7 @@ import * as cheerio from 'cheerio';
 import { factories } from '@strapi/strapi';
 
 export default factories.createCoreService('api::crawl-brand-link.crawl-brand-link', ({ strapi }) => ({
-  async getBrandLinks(url) {
+  async getBrandLinks(url: string) {
     try {
       const { data } = await axios.get(url, {
         headers: {
@@ -21,6 +21,7 @@ export default factories.createCoreService('api::crawl-brand-link.crawl-brand-li
         const text = $(element).text().trim();
         links.push({ link, text });
       });
+      console.log("links-service", links);
       return links;
     } catch (error) {
       console.error('Error fetching URL:', error.message);
