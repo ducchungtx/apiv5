@@ -21,5 +21,5 @@ export default factories.createCoreController('api::crawl-manual-link.crawl-manu
       message: 'crawl-manual-detail',
       info
     }
-  }
+  },
 }));

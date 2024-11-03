@@ -57,40 +57,36 @@ export default factories.createCoreService('api::crawl-manual-link.crawl-manual-
       throw new Error('Failed to fetch the URL');
     }
   },
-  async saveManualLink(links: [], brandDocumentId: string) {
+  async saveManualLink(links: [], id: string) {
     try {
+      strapi.log.info(`Start save links to database`);
       const promises = links.map(async (link: any) => {
+        strapi.log.info(`Processing link: ${link.link}`);
         const manual = await strapi.query('api::crawl-manual-link.crawl-manual-link').findOne({ where: { link: link.link } });
-        // {
-        //   link: 'http://www.cleancss.com/user-manuals/XK5/-BMPSR',
-        //   text: 'XK5-BMPSR',
-        //   description: 'BMPSR Module',
-        //   manufacturer: '.steute Schaltgeraete GmbH & Co.KG'
-        // },
         if (!manual) {
           const createdLink = await strapi.query('api::crawl-manual-link.crawl-manual-link').create({
             data: {
               name: link.text,
               link: link.link,
               isCrawl: false,
+              createdAt: new Date(),
+              createdBy: 1,
+              updatedAt: new Date(),
+              updatedBy: 1,
+              crawl_brand_link: id,
             },
           });
-
-          strapi.log.info(`Link ${link.link} added to database`);
-
-          // Gán documentId vào crawl-brand-link
-          await strapi.query('api::crawl-brand-link.crawl-brand-link').update({
-            where: { /* điều kiện để tìm crawl-brand-link cần cập nhật */ },
-            data: {
-              id: createdLink.id,
-            },
-          });
-
-          strapi.log.info(`Document ID ${createdLink.id} added to crawl-brand-link`);
+          strapi.log.info(`Link ${createdLink.link} added to database`);
         }
       });
       await Promise.all(promises);
-
+      // Gán documentId vào crawl-brand-link
+      await strapi.query('api::crawl-brand-link.crawl-brand-link').update({
+        where: { id },
+        data: {
+          isCrawToLink: true,
+        },
+      });
       return {
         message: 'Save manual links successfully'
       }

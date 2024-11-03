@@ -29,6 +29,10 @@
       "relation": "oneToMany",
       "target": "api::crawl-manual-link.crawl-manual-link",
       "mappedBy": "crawl_brand_link"
+    },
+    "isCrawToLink": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
