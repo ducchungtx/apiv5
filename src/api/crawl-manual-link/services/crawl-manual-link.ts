@@ -57,14 +57,14 @@ export default factories.createCoreService('api::crawl-manual-link.crawl-manual-
       throw new Error('Failed to fetch the URL');
     }
   },
-  async saveManualLink(links: [], id: string) {
+  async saveManualLink(links: any[], id: string, documentId: string) {
     try {
-      strapi.log.info(`Start save links to database`);
+      strapi.log.info('Start save links to database');
       const promises = links.map(async (link: any) => {
         strapi.log.info(`Processing link: ${link.link}`);
         const manual = await strapi.query('api::crawl-manual-link.crawl-manual-link').findOne({ where: { link: link.link } });
         if (!manual) {
-          const createdLink = await strapi.query('api::crawl-manual-link.crawl-manual-link').create({
+          const createdLink = await strapi.documents('api::crawl-manual-link.crawl-manual-link').create({
             data: {
               name: link.text,
               link: link.link,
@@ -76,10 +76,20 @@ export default factories.createCoreService('api::crawl-manual-link.crawl-manual-
               crawl_brand_link: id,
             },
           });
-          strapi.log.info(`Link ${createdLink.link} added to database`);
+          if (createdLink) {
+            await strapi.documents('api::crawl-manual-link.crawl-manual-link').publish({
+              documentId: createdLink.documentId,
+            });
+            strapi.log.info(`Link ${createdLink.link} added to database`);
+          } else {
+            strapi.log.error(`Link ${link.link} failed to add to database`);
+          }
+        } else {
+          strapi.log.info(`Link already exists in database: ${link.link}`);
         }
       });
       await Promise.all(promises);
+      strapi.log.info('All links processed, updating crawl-brand-link status');
       // Gán documentId vào crawl-brand-link
       await strapi.query('api::crawl-brand-link.crawl-brand-link').update({
         where: { id },
@@ -87,11 +97,15 @@ export default factories.createCoreService('api::crawl-manual-link.crawl-manual-
           isCrawToLink: true,
         },
       });
+      await strapi.documents('api::crawl-brand-link.crawl-brand-link').publish({
+        documentId: documentId,
+      });
+      strapi.log.info(`Updated crawl-brand-link with id ${id} to isCrawToLink: true`);
       return {
         message: 'Save manual links successfully'
-      }
+      };
     } catch (error) {
-      console.error('Error save manual links:', error.message);
+      strapi.log.error(`Error save manual links: ${error.message}`);
       throw new Error('Failed to save manual links');
     }
   }

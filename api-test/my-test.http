@@ -1,0 +1,2 @@
+# Get the list of brand links
+get http://localhost:1337/api/crawl-brand-link/get-brand-links?url=https://www.cleancss.com/user-manuals

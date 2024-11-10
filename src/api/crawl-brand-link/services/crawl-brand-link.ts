@@ -27,5 +27,43 @@ export default factories.createCoreService('api::crawl-brand-link.crawl-brand-li
       console.error('Error fetching URL:', error.message);
       throw new Error('Failed to fetch the URL');
     }
+  },
+
+  async saveBrandLink() {
+    const item = await strapi.db.query('api::crawl-brand-link.crawl-brand-link').findOne({
+      where: { isCrawl: false },
+    });
+    if (item) {
+      const { name, documentId } = item;
+      // save to database
+      const brand = await strapi.documents('api::brand.brand').create({
+        data: {
+          name,
+        }
+      });
+      if(brand) {
+        // update to published
+        await strapi.documents('api::brand.brand').publish({
+          documentId: brand.documentId,
+        });
+        strapi.log.info(`Brand ${name} added to database`);
+
+        // update the crawl-brand-link
+        await strapi.db.query('api::crawl-brand-link.crawl-brand-link').update({
+          where: { documentId },
+          data: {
+            isCrawl: true,
+            brandDocumentId: brand.documentId,
+          },
+        });
+
+        // publish the crawl-brand-link
+        await strapi.documents('api::crawl-brand-link.crawl-brand-link').publish({
+          documentId,
+        });
+      }
+    } else {
+      strapi.log.info(`No brand data to save`);
+    }
   }
 }));

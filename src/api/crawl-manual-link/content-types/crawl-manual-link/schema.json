@@ -4,7 +4,8 @@
   "info": {
     "singularName": "crawl-manual-link",
     "pluralName": "crawl-manual-links",
-    "displayName": "CrawlManualLink"
+    "displayName": "CrawlManualLink",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -28,6 +29,9 @@
       "relation": "manyToOne",
       "target": "api::crawl-brand-link.crawl-brand-link",
       "inversedBy": "crawl_manual_links"
+    },
+    "postDocumentId": {
+      "type": "string"
     }
   }
 }

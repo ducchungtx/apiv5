@@ -496,6 +496,8 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.String;
     brands: Schema.Attribute.Relation<'manyToMany', 'api::brand.brand'>;
     image: Schema.Attribute.Media<'images' | 'files'>;
+    keyword: Schema.Attribute.String;
+    content: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -528,6 +530,7 @@ export interface ApiCrawlBrandLinkCrawlBrandLink
       'api::crawl-manual-link.crawl-manual-link'
     >;
     isCrawToLink: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    brandDocumentId: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -546,6 +549,7 @@ export interface ApiCrawlManualLinkCrawlManualLink
     singularName: 'crawl-manual-link';
     pluralName: 'crawl-manual-links';
     displayName: 'CrawlManualLink';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -558,6 +562,7 @@ export interface ApiCrawlManualLinkCrawlManualLink
       'manyToOne',
       'api::crawl-brand-link.crawl-brand-link'
     >;
+    postDocumentId: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -586,6 +591,36 @@ export interface ApiPostDocumentPostDocument
     content: Schema.Attribute.Blocks;
     brand: Schema.Attribute.Relation<'oneToOne', 'api::brand.brand'>;
     documentLink: Schema.Attribute.Blocks;
+    des: Schema.Attribute.String;
+    description: Schema.Attribute.String;
+    keyword: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+  };
+}
+
+export interface ApiSiteInfoSiteInfo extends Struct.SingleTypeSchema {
+  collectionName: 'site_infos';
+  info: {
+    singularName: 'site-info';
+    pluralName: 'site-infos';
+    displayName: 'Site info';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    siteName: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.String;
+    keyword: Schema.Attribute.String;
+    googleSiteVerification: Schema.Attribute.String;
+    cDomain: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -961,6 +996,7 @@ declare module '@strapi/strapi' {
       'api::crawl-brand-link.crawl-brand-link': ApiCrawlBrandLinkCrawlBrandLink;
       'api::crawl-manual-link.crawl-manual-link': ApiCrawlManualLinkCrawlManualLink;
       'api::post-document.post-document': ApiPostDocumentPostDocument;
+      'api::site-info.site-info': ApiSiteInfoSiteInfo;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
       'admin::role': AdminRole;

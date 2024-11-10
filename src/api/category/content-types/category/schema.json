@@ -26,12 +26,19 @@
       "mappedBy": "categories"
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "keyword": {
+      "type": "string"
+    },
+    "content": {
+      "type": "text"
     }
   }
 }

@@ -27,6 +27,15 @@
     },
     "documentLink": {
       "type": "blocks"
+    },
+    "des": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "keyword": {
+      "type": "string"
     }
   }
 }
