@@ -26,6 +26,7 @@ export default factories.createCoreController('api::crawl-brand-link.crawl-brand
         data: {
           link: link.link,
           name: link.text,
+          type: link.description,
           isCrawl: false,
           createdAt: new Date(),
           createdBy: 1,

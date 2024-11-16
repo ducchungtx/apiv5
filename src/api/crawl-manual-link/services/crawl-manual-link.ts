@@ -68,6 +68,7 @@ export default factories.createCoreService('api::crawl-manual-link.crawl-manual-
             data: {
               name: link.text,
               link: link.link,
+              type: link.description,
               isCrawl: false,
               createdAt: new Date(),
               createdBy: 1,
