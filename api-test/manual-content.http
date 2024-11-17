@@ -1,0 +1,8 @@
+# Get the list of manual content links
+# get http://localhost:1337/api/crawl-manual-links
+
+# Get the list of crawl brand links
+get http://localhost:1337/api/crawl-manual-links/g7hdsk970f7a7udtl0zpmt8t
+
+# Get the content of a manual link
+get http://localhost:1337/api/post-document/crawl-manual-detail?url=https://www.cleancss.com/user-manuals/V3J/-J2011

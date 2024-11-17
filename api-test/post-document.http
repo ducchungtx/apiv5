@@ -1,0 +1,2 @@
+# Get the documents of a brand
+get http://localhost:1337/api/post-documents

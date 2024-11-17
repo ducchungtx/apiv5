@@ -25,10 +25,7 @@
       "target": "api::brand.brand",
       "inversedBy": "post_document"
     },
-    "documentLink": {
-      "type": "blocks"
-    },
-    "des": {
+    "type": {
       "type": "string"
     },
     "description": {
@@ -36,6 +33,16 @@
     },
     "keyword": {
       "type": "string"
+    },
+    "files": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
     }
   }
 }
